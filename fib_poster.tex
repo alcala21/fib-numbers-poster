@@ -1,0 +1,65 @@
+\documentclass{standalone}
+\usepackage{luacode}
+\usepackage{tikz, amsmath}
+\usetikzlibrary{math, backgrounds, calc}
+
+\usepackage{fontspec}
+\usepackage{xcolor}
+
+% \setmainfont[Color=brown]{Fira Code}
+\definecolor{backColor}{HTML}{1d1f21}
+\definecolor{awesome-pink}{HTML}{dc226c}
+\definecolor{soft_white}{HTML}{c5c8c6}
+
+
+\setmainfont[Color=awesome-pink]{Source Code Pro}
+\colorlet{awesome-color}{awesome-pink}
+
+
+
+\begin{document}
+
+\begin{luacode*}
+function fib(n)
+	a = 0.0
+	b = 1.0
+	out_text = ''
+	for i = 1, n do
+		out_text = out_text .. ', ' .. string.format("%.0f", a)
+		ta = a
+		a = b
+		b = ta + b
+	end
+	tex.print(string.sub(out_text, 2))
+end
+\end{luacode*}
+
+
+\begin{tikzpicture}[scale = 2, background rectangle/.style={fill=backColor},
+                    show background rectangle]
+\node[inner sep=0pt, rotate=90, scale=3.5] (spiral) at (4,-1.6)
+    {
+    \input{fib-tikz.tex}
+    };
+\node {\begin{minipage}{22cm}
+	\flushleft
+	\catcode`\^^M=12
+	\catcode`\%=12
+	\Huge \directlua{fib(87)}
+	\end{minipage}};
+\node[soft_white] at (4.2, -1.8) {\huge $n_{i} = n_{i-1} + n_{i-2}$};
+\node[soft_white] at (4.2, -2.3) {\Large $i = 87$};
+\end{tikzpicture}
+
+% Setup for 999 numbers
+% minipage_width{350cm}
+% fib(999)
+
+
+\end{document}
+
+% def fib(n):
+%     a, b = 0, 1
+%     for i in range(n):
+%         a, b = b, a + b
+%     return(a)
